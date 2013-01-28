@@ -24,7 +24,7 @@ Examples:
     anim(box, "opacity",    0.2,    2);
     anim(box, "height",     300,    2,   "ease-in");
     anim(box, "height",     "14em", 2,   "ease-in");
-    anim(box, "height",     14,     2,   "ease-in", "em");
+    anim(box, "height",     14,     2,   "ease-in", null, "em");
     anim(box, "marginLeft", "2%",   2,   "ease-out");
     anim(box, "fontSize",   "20pt", 2.5, "lin",    12);
     anim(document.body, "scrollTop", 500, 5);
