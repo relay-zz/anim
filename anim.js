@@ -18,7 +18,7 @@ limitations under the License. */
 // anim(document.getElementById("box"), "height",  300, 2);
 // anim(box, "height",     300,    2,   "ease-in");
 // anim(box, "height",     "14em", 2,   "ease-in");
-// anim(box, "height",     14,     2,   "ease-in", "em");
+// anim(box, "height",     14,     2,   "ease-in", null, "em");
 // anim(box, "marginLeft", "2%",   2,   "ease-out");
 // anim(box, "padding",    "30px", 1.5, "lin",    10);
 // anim(document.body, "scrollTop", 500, 5);
