@@ -1,0 +1,4 @@
+anim
+====
+
+Tiny animation library
