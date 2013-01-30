@@ -25,25 +25,36 @@ limitations under the License. */
 // anim(box, "height", 300, 2).then(function() { anim(box, "width", 300, 2) });
 
 function anim(node, prop, to, duration, ease, from, unit) {
-  duration *= 1000;
+  duration *= 1000;  //to milliseconds
 
   var style = prop in (node.style || {}),
-    end = +new Date + duration,
-    remain, percent, callback;
+    end = +new Date + duration,  //when animation should end
+    remain, percent, callback, plugin;
+
+  //search through our list of plugins
+  remain = prop.toLowerCase();
+  for(var i in anim.fx) {
+    if(remain.indexOf(i) >= 0) {
+      plugin = anim.fx[i];
+      break
+    }
+  }
 
   unit = unit || /\D+$/.exec(to) || 0;
 
-  from = from || parseFloat(from === 0 ? 0 :
+  from = from || from === 0 ? 0 :
           !style ? node[prop] :
           node.currentStyle ? node.currentStyle[prop] :
-          getComputedStyle(node, null)[prop]);
+          getComputedStyle(node, null)[prop];
 
-  if(isNaN(from)) {
-    from = prop == "width" ? node.clientWidth : 
-          prop == "height" ? node.clientHeight : 0;
+  if(!plugin) {
+    from = parseFloat(from);
+    if(isNaN(from))  //from == "auto" || "inherit" || "none"
+      from = prop == "width" ? node.clientWidth : 
+            prop == "height" ? node.clientHeight : 0
   }
 
-  to = parseFloat(to);
+  to = plugin ? to : parseFloat(to);
 
   style = style ? node.style : node;
 
@@ -51,34 +62,89 @@ function anim(node, prop, to, duration, ease, from, unit) {
     remain = end - new Date().getTime();
 
     if(remain < 50) {
-      style[prop] = to + unit;
+      if(plugin) {
+        plugin(node, to, from, 1, prop, unit)
+      } else {
+        style[prop] = unit ? to + unit : to;
+      }
       if(callback) callback();
-      return;
+      return
     }
 
     percent = remain/duration;
 
     if(ease == "lin") {
-      percent = 1 - percent;
+      percent = 1 - percent
 
     } else if(ease == "ease") {
       percent = (0.5 - percent)*2;
-      percent = 1 - ((percent*percent*percent - percent*3) + 2)/4;
+      percent = 1 - ((percent*percent*percent - percent*3) + 2)/4
 
     } else if(ease == "ease-in") {
       percent = 1 - percent;
-      percent = percent*percent*percent;
+      percent = percent*percent*percent
 
-    } else {
-      percent = 1 - percent*percent*percent;
+    } else {  //ease-in-out
+      percent = 1 - percent*percent*percent
     }
-    style[prop] = (percent*(to - from) + from) + unit;
+    if(plugin) {
+      plugin(node, to, from, percent, prop, unit)
+    } else {
+      style[prop] = (percent*(to - from) + from) + unit
+    }
 
-    setTimeout(repeat, 50);
+    setTimeout(repeat, 50)
   }
   repeat();
 
-  return {
+  return {  //used to add a callback
     then: function(cb) {callback = cb}
   }
 }
+anim.fx = {
+  rgba: /#(.)(.)(.)\b|#(..)(..)(..)\b|(\d+)%,(\d+)%,(\d+)%(?:,([\d\.]+))?|(\d+),(\d+),(\d+)(?:,([\d\.]+))?\b/,
+
+  opacity: function(node, to, from, percent, prop) {
+    node = node.style;
+    to = (percent*(to - from) + from);
+    if(prop in node) {
+      node[prop] = to
+    } else {
+      to = to == 1 ? "" : "alpha(opacity=" + Math.round(to*100) + ")";
+      node.filter = to
+    }
+  },
+
+  color: function(node, to, from, percent, prop) {
+    var A = anim, convert = function(str, val) {
+      val = [0, 0, 0, 0];
+      str.replace(/\s/g,"").replace(A.fx.rgba,
+      function(_, h1,h2,h3, h4,h5,h6, p1,p2,p3,p4, d1,d2,d3,d4) {
+        var h = [h1 + h1 || h4, h2 + h2 || h5, h3 + h3 || h6],
+            p = [p1, p2, p3];
+
+        for(var i=0;i<3;i++) h[i] = parseInt(h[i], 16), p[i] = Math.round(p[i]*2.55);
+
+        val = [h[0] || p[0] || d1 || 0, h[1] || p[1] || d2 || 0, h[2] || p[2] || d3 || 0, d4 || p4 || 1]
+      });
+      return val
+    };
+
+    to = convert(to);
+    from = convert(from);
+
+    if(to[3] == 0) to = [].concat(from), to[3] = 0;
+    if(from[3] == 0) from = [].concat(to), from[3] = 0;
+
+    var value = [0, 0, 0, percent*(to[3] - from[3]) + 1*from[3]];
+    for(var i=2; i>=0; i--) value[i] = Math.round(percent*(to[i] - from[i]) + 1*from[i]);
+
+    if(value[3] == 255 || A.rgbaIE) value.pop();
+
+    try {
+      node.style[prop] = (value.length > 3 ? "rgba(" : "rgb(") + value.join(",") + ")"
+    } catch(e) {
+      A.rgbaIE = 1
+    }
+  }
+};
