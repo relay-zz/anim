@@ -29,7 +29,7 @@ function anim(node, prop, to, duration, ease, from) {
 
   var style = prop in (node.style || {}),
     end = +new Date + duration,  //when animation should end
-    unit, remain, percent, callback, plugin;
+    unit, remain, percent, callback, plugin, context;
 
   //search through our list of plugins
   remain = prop.toLowerCase();
@@ -56,6 +56,8 @@ function anim(node, prop, to, duration, ease, from) {
 
   to = plugin ? to : parseFloat(to);
 
+  if(plugin) context = {n:node, to:to, from:from, p:percent, prop:prop, u:unit};
+
   style = style ? node.style : node;
 
   var repeat = function() {
@@ -63,7 +65,8 @@ function anim(node, prop, to, duration, ease, from) {
 
     if(remain < 50) {
       if(plugin) {
-        plugin(node, to, from, 1, prop, unit)
+        context.p = 1;
+        plugin(context)
       } else {
         style[prop] = unit ? to + unit : to;
       }
@@ -88,7 +91,8 @@ function anim(node, prop, to, duration, ease, from) {
       percent = 1 - percent*percent*percent
     }
     if(plugin) {
-      plugin(node, to, from, percent, prop, unit)
+      context.p = percent;
+      plugin(context)
     } else {
       style[prop] = (percent*(to - from) + from) + unit
     }
@@ -104,10 +108,30 @@ function anim(node, prop, to, duration, ease, from) {
 anim.fx = {
   rgba: /#(.)(.)(.)\b|#(..)(..)(..)\b|(\d+)%,(\d+)%,(\d+)%(?:,([\d\.]+))?|(\d+),(\d+),(\d+)(?:,([\d\.]+))?\b/,
 
-  opacity: function(node, to, from, percent, prop) {
-    from *= 1;
-    node = node.style;
-    to = (percent*(to - from) + from);
+  strToRGBA: function(str, val) {
+    val = [0, 0, 0, 0];
+    str.replace(/\s/g,"").replace(anim.fx.rgba,
+    function(_, h1,h2,h3, h4,h5,h6, p1,p2,p3,p4, d1,d2,d3,d4) {
+      var h = [h1 + h1 || h4, h2 + h2 || h5, h3 + h3 || h6],
+          p = [p1, p2, p3];
+
+      for(var i=0;i<3;i++) h[i] = parseInt(h[i], 16), p[i] = Math.round(p[i]*2.55);
+
+      val = [
+        h[0] || p[0] || d1 || 0,
+        h[1] || p[1] || d2 || 0,
+        h[2] || p[2] || d3 || 0,
+        d4 || p4 || 1
+      ]
+    });
+    return val
+  },
+
+  opacity: function(context) {
+    var node = context.n.style,
+    from = context.from*1,
+    to = (context.p*(context.to - from) + from),
+    prop = context.prop;
     if(prop in node) {
       node[prop] = to
     } else {
@@ -116,31 +140,23 @@ anim.fx = {
     }
   },
 
-  color: function(node, to, from, percent, prop) {
-    var A = anim, convert = function(str, val) {
-      val = [0, 0, 0, 0];
-      str.replace(/\s/g,"").replace(A.fx.rgba,
-      function(_, h1,h2,h3, h4,h5,h6, p1,p2,p3,p4, d1,d2,d3,d4) {
-        var h = [h1 + h1 || h4, h2 + h2 || h5, h3 + h3 || h6],
-            p = [p1, p2, p3];
+  color: function(context) {
+    var A = anim,
+      node = context.n,
+      to = context.to,
+      from = context.from,
+      percent = context.p,
+      prop = context.prop;
 
-        for(var i=0;i<3;i++) h[i] = parseInt(h[i], 16), p[i] = Math.round(p[i]*2.55);
+    if(!context.init) {
+      to = context.to = A.fx.strToRGBA(to);
+      from = context.from = A.fx.strToRGBA(from);
 
-        val = [
-          h[0] || p[0] || d1 || 0,
-          h[1] || p[1] || d2 || 0,
-          h[2] || p[2] || d3 || 0,
-          d4 || p4 || 1
-        ]
-      });
-      return val
-    };
+      if(to[3] == 0) to = [].concat(from), to[3] = 0;
+      if(from[3] == 0) from = [].concat(to), from[3] = 0;
 
-    to = convert(to);
-    from = convert(from);
-
-    if(to[3] == 0) to = [].concat(from), to[3] = 0;
-    if(from[3] == 0) from = [].concat(to), from[3] = 0;
+      context.init = 1
+    }
 
     var value = [0, 0, 0, percent*(to[3] - from[3]) + 1*from[3]];
     for(var i=2; i>=0; i--) value[i] = Math.round(percent*(to[i] - from[i]) + 1*from[i]);
