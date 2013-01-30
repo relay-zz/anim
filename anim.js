@@ -110,7 +110,7 @@ anim.fx = {
     if(prop in node) {
       node[prop] = to
     } else {
-      to = to == 1 ? "" : "alpha(opacity=" + Math.round(to*100) + ")";
+      to = to == 1 ? "" : "alpha(" + prop + "=" + Math.round(to*100) + ")";
       node.filter = to
     }
   },
@@ -125,7 +125,12 @@ anim.fx = {
 
         for(var i=0;i<3;i++) h[i] = parseInt(h[i], 16), p[i] = Math.round(p[i]*2.55);
 
-        val = [h[0] || p[0] || d1 || 0, h[1] || p[1] || d2 || 0, h[2] || p[2] || d3 || 0, d4 || p4 || 1]
+        val = [
+          h[0] || p[0] || d1 || 0,
+          h[1] || p[1] || d2 || 0,
+          h[2] || p[2] || d3 || 0,
+          d4 || p4 || 1
+        ]
       });
       return val
     };
