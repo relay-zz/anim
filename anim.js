@@ -13,23 +13,23 @@ See the License for the specific language governing permissions and
 limitations under the License. */
 
 // Usage:
-// anim(node, styleNameCamelCase, newSize, timeSeconds[, easingFunction, oldSize, units])
+// anim(node, styleNameCamelCase, newSize, timeSeconds[, easingFunction, oldSize])
 //
 // anim(document.getElementById("box"), "height",  300, 2);
 // anim(box, "height",     300,    2,   "ease-in");
 // anim(box, "height",     "14em", 2,   "ease-in");
-// anim(box, "height",     14,     2,   "ease-in", null, "em");
+// anim(box, "height",     14,     2,   "ease-in", "12px");
 // anim(box, "marginLeft", "2%",   2,   "ease-out");
 // anim(box, "padding",    "30px", 1.5, "lin",    10);
 // anim(document.body, "scrollTop", 500, 5);
 // anim(box, "height", 300, 2).then(function() { anim(box, "width", 300, 2) });
 
-function anim(node, prop, to, duration, ease, from, unit) {
+function anim(node, prop, to, duration, ease, from) { 
   duration *= 1000;  //to milliseconds
 
   var style = prop in (node.style || {}),
     end = +new Date + duration,  //when animation should end
-    remain, percent, callback, plugin;
+    unit, remain, percent, callback, plugin;
 
   //search through our list of plugins
   remain = prop.toLowerCase();
@@ -40,12 +40,12 @@ function anim(node, prop, to, duration, ease, from, unit) {
     }
   }
 
-  unit = unit || /\D+$/.exec(to) || 0;
-
   from = from || from === 0 ? 0 :
           !style ? node[prop] :
           node.currentStyle ? node.currentStyle[prop] :
           getComputedStyle(node, null)[prop];
+
+  unit = /\D+$/.exec(from) || /\D+$/.exec(to) || 0;
 
   if(!plugin) {
     from = parseFloat(from);
@@ -105,12 +105,13 @@ anim.fx = {
   rgba: /#(.)(.)(.)\b|#(..)(..)(..)\b|(\d+)%,(\d+)%,(\d+)%(?:,([\d\.]+))?|(\d+),(\d+),(\d+)(?:,([\d\.]+))?\b/,
 
   opacity: function(node, to, from, percent, prop) {
+    from *= 1;
     node = node.style;
     to = (percent*(to - from) + from);
     if(prop in node) {
       node[prop] = to
     } else {
-      to = to == 1 ? "" : "alpha(" + prop + "=" + Math.round(to*100) + ")";
+      to = to >= 1 ? "" : "alpha(" + prop + "=" + Math.round(to*100) + ")";
       node.filter = to
     }
   },
