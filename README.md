@@ -17,7 +17,7 @@ optional parameters are:
 * **from**: the starting value of the CSS property. If not supplied, it is read from the node
 * **unit**: the unit of measurement. e.g., px, em, %, pt. This can be provided in the "to" parameter too
 
-This function returns an object with one method ("then") which functions similar to Deferred (Promise/B), which gives you a callback function that is called after the animation is done.
+This function returns an object with one method ("then"), which allows you to add a callback function that is called after the animation is done.
 
 Examples:
 =====
@@ -31,3 +31,8 @@ Examples:
 
     //run 2 animations one after the other
     anim(box, "height", 300, 2).then(function() { anim(box, "width", 300, 2) });
+
+
+Support:
+=====
+Supports IE6+, Firefox 2+, Chrome
