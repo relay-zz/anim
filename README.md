@@ -1,7 +1,7 @@
 anim
 ====
 
-Anim is a tiny and bare bones animation library weighing in at `1.1 KB` in plain code, `536 bytes` when minified and `382 bytes` when minified and gzipped.
+Anim is a tiny and bare bones animation library weighing in at `2.8 KB` in plain code, `1.5 KB` when minified and `0.9 KB` when minified and gzipped.
 
 Usage:
 =====
