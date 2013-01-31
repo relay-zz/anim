@@ -23,6 +23,9 @@ A = function(n, g, t, e) {
 
   for(a in g) {
     o = g[a];
+
+    if(!o.to && o.to !== 0) o = {to: o};  //shorthand
+
     A.defs(o, n, a, e);  //set defaults
     A.iter(o, /color/i.test(a) ? A.fx.color : (A.fx[a] || A.fx._), t*1000, cb);
     cb = 0
@@ -91,8 +94,9 @@ A.fx = {
   },
 
   opacity: function(o, n, to, fr, a, e) {
-    to = (o.p*(to - fr) + fr*1),
-    n = o.s;
+    fr = fr*1 || 1;
+    to = (o.p*(to - fr) + fr);
+    n = n.style;
     if(a in n) {
       n[a] = to
     } else {
