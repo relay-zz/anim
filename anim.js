@@ -12,161 +12,129 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License. */
 
-// Usage:
-// anim(node, styleNameCamelCase, newSize, timeSeconds[, easingFunction, oldSize])
-//
-// anim(document.getElementById("box"), "height",  300, 2);
-// anim(box, "height",     300,    2,   "ease-in");
-// anim(box, "height",     "14em", 2,   "ease-in");
-// anim(box, "height",     14,     2,   "ease-in", "12px");
-// anim(box, "marginLeft", "2%",   2,   "ease-out");
-// anim(box, "padding",    "30px", 1.5, "lin",    10);
-// anim(document.body, "scrollTop", 500, 5);
-// anim(box, "height", 300, 2).then(function() { anim(box, "width", 300, 2) });
+var anim = function(A) {
+"use strict";
 
-function anim(node, prop, to, duration, ease, from) { 
-  duration *= 1000;  //to milliseconds
+A = function(n, g, t, e) {
+  if(n.charAt) n = document.getElementById(n);
 
-  var style = prop in (node.style || {}),
-    end = +new Date + duration,  //when animation should end
-    unit, remain, percent, callback, plugin, context;
+  var a, o, c,
+    cb = function() {c && c()};
 
-  //search through our list of plugins
-  remain = prop.toLowerCase();
-  for(var i in anim.fx) {
-    if(remain.indexOf(i) >= 0) {
-      plugin = anim.fx[i];
-      break
-    }
+  for(a in g) {
+    o = g[a];
+    A.defs(o, n, a, e);  //set defaults
+    A.iter(o, /color/i.test(a) ? A.fx.color : (A.fx[a] || A.fx._), t*1000, cb);
+    cb = 0
   }
 
-  from = from || from === 0 ? 0 :
-          !style ? node[prop] :
-          node.currentStyle ? node.currentStyle[prop] :
-          getComputedStyle(node, null)[prop];
+  return {then: function(x) {c = x}}
+};
 
-  unit = /\D+$/.exec(from) || /\D+$/.exec(to) || 0;
+A.defs = function(o, n, a, e, s) {
+  s = n.style;
+  o.a = a;
+  o.n = n;
+  o.s = (a in s) ? s : n;  //n.style||n
+  if(e) o.e = e;
 
-  if(!plugin) {
-    from = parseFloat(from);
-    if(isNaN(from))  //from == "auto" || "inherit" || "none"
-      from = prop == "width" ? node.clientWidth : 
-            prop == "height" ? node.clientHeight : 0
-  }
+  o.fr = o.fr || (o.fr === 0 ? 0 :
+        o.s == n ? n[a] :
+        n.currentStyle ? n.currentStyle[a] :
+        getComputedStyle(n, null)[a]);
 
-  to = plugin ? to : parseFloat(to);
+  o.u = /\D+$/.exec(o.fr) || /\D+$/.exec(o.to) || 0
+};
 
-  if(plugin) context = {n:node, to:to, from:from, p:percent, prop:prop, u:unit};
+A.iter = function(o, fn, t, cb) {
+  var i, p,
+    e = o.e,
+    z = +new Date + t,
 
-  style = style ? node.style : node;
+  _ = function() {
+    i = z - new Date().getTime();
 
-  var repeat = function() {
-    remain = end - new Date().getTime();
+    if(i < 50) return o.p = 1, fn(o, o.n, o.to, o.fr, o.a, o.e), cb && cb();
 
-    if(remain < 50) {
-      if(plugin) {
-        context.p = 1;
-        plugin(context)
-      } else {
-        style[prop] = unit ? to + unit : to;
-      }
-      if(callback) callback();
-      return
-    }
+    p = i/t;
+    if(e == "lin") {
+      p = 1 - p
 
-    percent = remain/duration;
+    } else if(e == "ease") {
+      p = (0.5 - p)*2;
+      p = 1 - ((p*p*p - p*3) + 2)/4
 
-    if(ease == "lin") {
-      percent = 1 - percent
-
-    } else if(ease == "ease") {
-      percent = (0.5 - percent)*2;
-      percent = 1 - ((percent*percent*percent - percent*3) + 2)/4
-
-    } else if(ease == "ease-in") {
-      percent = 1 - percent;
-      percent = percent*percent*percent
+    } else if(e == "ease-in") {
+      p = 1 - p;
+      p = p*p*p
 
     } else {  //ease-in-out
-      percent = 1 - percent*percent*percent
+      p = 1 - p*p*p
     }
-    if(plugin) {
-      context.p = percent;
-      plugin(context)
-    } else {
-      style[prop] = (percent*(to - from) + from) + unit
-    }
-
-    setTimeout(repeat, 50)
+    o.p = p;
+    fn(o, o.n, o.to, o.fr, o.a, o.e);
+    setTimeout(_, 50)
   }
-  repeat();
+  _();
+};
 
-  return {  //used to add a callback
-    then: function(cb) {callback = cb}
-  }
-}
-anim.fx = {
-  rgba: /#(.)(.)(.)\b|#(..)(..)(..)\b|(\d+)%,(\d+)%,(\d+)%(?:,([\d\.]+))?|(\d+),(\d+),(\d+)(?:,([\d\.]+))?\b/,
-
-  strToRGBA: function(str, val) {
-    val = [0, 0, 0, 0];
-    str.replace(/\s/g,"").replace(anim.fx.rgba,
-    function(_, h1,h2,h3, h4,h5,h6, p1,p2,p3,p4, d1,d2,d3,d4) {
-      var h = [h1 + h1 || h4, h2 + h2 || h5, h3 + h3 || h6],
-          p = [p1, p2, p3];
-
-      for(var i=0;i<3;i++) h[i] = parseInt(h[i], 16), p[i] = Math.round(p[i]*2.55);
-
-      val = [
-        h[0] || p[0] || d1 || 0,
-        h[1] || p[1] || d2 || 0,
-        h[2] || p[2] || d3 || 0,
-        d4 || p4 || 1
-      ]
-    });
-    return val
+A.fx = {
+  _: function(o, n, to, fr, a, e) {
+    fr = parseFloat(fr),
+    to = parseFloat(to),
+    o.s[a] = (o.p*(to - fr) + fr) + o.u
   },
 
-  opacity: function(context) {
-    var node = context.n.style,
-    from = context.from*1,
-    to = (context.p*(context.to - from) + from),
-    prop = context.prop;
-    if(prop in node) {
-      node[prop] = to
+  width: function(o, n, to, fr, a, e) {
+    fr = parseFloat(fr),
+    A.fx._(o, n, to, !isNaN(fr) ? fr : a == "width" ? n.clientWidth : n.clientHeight, a, e);
+  },
+
+  opacity: function(o, n, to, fr, a, e) {
+    to = (o.p*(to - fr) + fr*1),
+    n = o.s;
+    if(a in n) {
+      n[a] = to
     } else {
-      to = to >= 1 ? "" : "alpha(" + prop + "=" + Math.round(to*100) + ")";
-      node.filter = to
+      n.filter = to >= 1 ? "" : "alpha(" + a + "=" + Math.round(to*100) + ")"
     }
   },
 
-  color: function(context) {
-    var A = anim,
-      node = context.n,
-      to = context.to,
-      from = context.from,
-      percent = context.p,
-      prop = context.prop;
-
-    if(!context.init) {
-      to = context.to = A.fx.strToRGBA(to);
-      from = context.from = A.fx.strToRGBA(from);
-
-      if(to[3] == 0) to = [].concat(from), to[3] = 0;
-      if(from[3] == 0) from = [].concat(to), from[3] = 0;
-
-      context.init = 1
+  color: function(o, n, to, fr, a, e, i, v) {
+    if(!o.ok) {
+      to = o.to = A.toRGBA(to);
+      fr = o.fr = A.toRGBA(fr);
+      if(to[3] == 0) to = [].concat(fr), to[3] = 0;
+      if(fr[3] == 0) fr = [].concat(to), fr[3] = 0;
+      o.ok = 1
     }
 
-    var value = [0, 0, 0, percent*(to[3] - from[3]) + 1*from[3]];
-    for(var i=2; i>=0; i--) value[i] = Math.round(percent*(to[i] - from[i]) + 1*from[i]);
+    v = [0, 0, 0, o.p*(to[3] - fr[3]) + 1*fr[3]];
+    for(i=2; i>=0; i--) v[i] = Math.round(o.p*(to[i] - fr[i]) + 1*fr[i]);
 
-    if(value[3] == 255 || A.rgbaIE) value.pop();
+    if(v[3] == 255 || A.rgbaIE) v.pop();
 
     try {
-      node.style[prop] = (value.length > 3 ? "rgba(" : "rgb(") + value.join(",") + ")"
+      o.s[a] = (v.length > 3 ? "rgba(" : "rgb(") + v.join(",") + ")"
     } catch(e) {
       A.rgbaIE = 1
     }
   }
 };
+A.fx.height = A.fx.width;
+
+A.RGBA = /#(.)(.)(.)\b|#(..)(..)(..)\b|(\d+)%,(\d+)%,(\d+)%(?:,([\d\.]+))?|(\d+),(\d+),(\d+)(?:,([\d\.]+))?\b/;
+A.toRGBA = function(s, v) {
+  v = [0, 0, 0, 0];
+  s.replace(/\s/g, "").replace(A.RGBA, function(i, a,b,c, f,g,h, l,m,n,o, w,x,y,z) {
+    var h = [a+a||f, b+b||g, c+c||h], p = [l, m, n];
+
+    for(i=0; i<3; i++) h[i] = parseInt(h[i], 16), p[i] = Math.round(p[i]*2.55);
+
+    v = [h[0]||p[0]||w||0,  h[1]||p[1]||x||0,  h[2]||p[2]||y||0,  o||z||1]
+  });
+  return v
+};
+
+return A
+}();
