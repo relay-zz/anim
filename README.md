@@ -16,8 +16,8 @@ Usage:
 
 * **cssName**: the css property to animate; written in camelCase (margin-left --> marginLeft)
 * **to**: the end value of the CSS property. Can be number or string with optional units. e.g., 100, "100px", "50%", "3em"
-* **fr**: the starting value of the CSS property. If not supplied, it is read from the node
-* **ease**: easing function name. (see above)
+* **fr** (optional): the starting value of the CSS property. If not supplied, it is read from the node
+* **ease** (optional): easing function name. (see above)
 
 This function returns an object with one method ("then"), which allows you to add a callback function that is called after the animation is done.
 
