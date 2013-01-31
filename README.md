@@ -5,18 +5,16 @@ Anim is a tiny and bare bones animation library weighing in at `2.5 KB` in plain
 
 Usage:
 =====
-``anim(node, properties, duration, ease)``
+``anim(node, properties, duration, ease*)``
 
 * **node**: the node to animate
 * **properties**: a map of CSS properties to animate (see below)
 * **duration**: time in seconds to run animation. e.g., 3.5 is 3.5 seconds
-
-Optional parameters are:
-* **ease**: easing function name. Choose from "ease-in", "ease" (means: ease-in-out), "lin" (means: linear), and undefined means "ease-out". This overrides the individual easing properties
+* **ease** (optional): easing function name. Choose from "ease-in", "ease" (means: ease-in-out), "lin" (means: linear), and undefined means "ease-out". This overrides the individual easing properties
 
 ``properties = {cssName: {to: endValue, fr: startValue, ease: easingFunction}}``
 
-* **cssName**: the css property to animate
+* **cssName**: the css property to animate; written in camelCase (margin-left --> marginLeft)
 * **to**: the end value of the CSS property. Can be number or string with optional units. e.g., 100, "100px", "50%", "3em"
 * **fr**: the starting value of the CSS property. If not supplied, it is read from the node
 * **ease**: easing function name. (see above)
