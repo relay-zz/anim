@@ -11,70 +11,57 @@ div {position:absolute}
 <div id="c1" class="cloud" style="top:50px; left:50px">cloud</div>
 <div id="c2" class="cloud" style="top:120px; left:350px">cloud</div>
 <div id="g" style="bottom:0; left:0; right:0; height:100px; background:#8d8; color:#292; line-height:100px">grass</div>
-<div id="a" style="bottom:80px; left:150px; width:200px; font-size:1em; height:100px; line-height:100px; color:#600; background:#d77">car</div>
+<div id="a" style="bottom:80px; left:150px; width:200px; font-size:21pt; height:100px; line-height:100px; color:#600; background:#d77">car</div>
 <div id="b" style="left:200px; top:400px; color:#cc0; background:yellow; padding:5px">bee</div>
 
-<script src="anim.min.js"></script>
+<script src="anim2.js"></script>
 <script>
 function $(id) {return document.getElementById(id)}
 
 function cloud1() {
-  anim($("c1"), "left", "400px", 15).then(function() {
-    anim($("c1"), "left", "100px", 15).then(cloud1);
-  });
-  anim($("c1"), "backgroundColor", "#ddf", 15).then(function() {
-    anim($("c1"), "backgroundColor", "#fff", 15);
+  anim($("c1"), {left:{to:"400px"}, backgroundColor:{to:"#ddf"}}, 15).then(function() {
+    anim($("c1"), {left:{to:"100px"}, backgroundColor:{to:"#fff"}}, 15).then(cloud1);
   });
 }
 
 function cloud2() {
   setTimeout(function() {
-    anim($("c2"), "left", "600px", 17).then(function() {
-      anim($("c2"), "left", "350px", 17).then(cloud2);
+    anim($("c2"), {left:{to:"600px"}}, 17).then(function() {
+      anim($("c2"), {left:{to:"350px"}}, 17).then(cloud2);
     });
   }, 1000);
 }
 
 function cloud1b() {
-  anim($("c1"), "height", "110px", 3, "ease");
-  anim($("c1"), "border-width", "8px", 3);
-  anim($("c2"), "height", "110px", 3, "ease");
-  anim($("c2"), "border-width", "8px", 3).then(function() {
-    anim($("c1"), "height", "100px", 3, "ease");
-    anim($("c1"), "border-width", "1px", 3);
-    anim($("c2"), "height", "100px", 3, "ease");
-    anim($("c2"), "border-width", "1px", 3).then(cloud1b);
+  anim($("c1"), {height:{to:"110px"},borderWidth:{to:"8px"}}, 3, "ease");
+  anim($("c2"), {height:{to:"110px"},borderWidth:{to:"8px"}}, 3, "ease").then(function() {
+    anim($("c1"), {height:{to:"100px"},borderWidth:{to:"1px"}}, 3, "ease");
+    anim($("c2"), {height:{to:"100px"},borderWidth:{to:"1px"}}, 3, "ease").then(cloud1b);
   });
 }
 
 function car() {
-  anim($("a"), "left", "600px", 5, "ease").then(function() {
-    anim($("a"), "left", "150px", 5, "ease").then(car);
-  });
-  anim($("a"), "fontSize", 60, 5).then(function() {
-    anim($("a"), "fontSize", 21, 5);
-  });
-  anim($("a"), "opacity", 0.3, 5).then(function() {
-    anim($("a"), "opacity", 1, 5);
+  anim($("a"),{left:{to:"600px"},fontSize:{to:60},opacity:{to:0.3}}, 5, "ease").then(function() {
+    anim($("a"),{left:{to:"150px"},fontSize:{to:21},opacity:{to:1}}, 5, "ease").then(car);
   });
 }
 
 function grass() {
-  anim($("g"), "backgroundColor", "#6b6", 0.6, "ease").then(function() {
-    anim($("g"), "backgroundColor", "#8d8", 0.6, "ease").then(grass);
+  anim($("g"), {backgroundColor:{to:"#6b6"}}, 0.6, "ease").then(function() {
+    anim($("g"), {backgroundColor:{to:"#8d8"}}, 0.6, "ease").then(grass);
   });
 }
 
 function bee() {
-  anim($("b"), "left", 300, 0.5, "ease").then(function() {
-    anim($("b"), "top", 500, 0.5, "ease").then(function() {
-      anim($("b"), "left", 200, 0.5, "ease").then(function() {
-        anim($("b"), "top", 400, 0.5, "ease").then(bee);
+  anim($("b"), {left:{to:300}}, 0.5, "ease").then(function() {
+    anim($("b"), {top:{to:500}}, 0.5, "ease").then(function() {
+      anim($("b"), {left:{to:200}}, 0.5, "ease").then(function() {
+        anim($("b"), {top:{to:400}}, 0.5, "ease").then(bee);
       });
     });
   });
-  anim($("b"), "padding", 10, 1).then(function() {
-    anim($("b"), "padding", 5, 1)
+  anim($("b"), {padding:{to:10}}, 1).then(function() {
+    anim($("b"), {padding:{to:5}}, 1)
   });
 }
 
