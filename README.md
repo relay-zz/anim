@@ -1,7 +1,7 @@
 anim
 ====
 
-Anim is a tiny and bare bones animation library weighing in at [`2.5 KB`](https://raw.github.com/relay/anim/master/anim.js) in plain code, [`1.9 KB`](https://raw.github.com/relay/anim/master/anim.min.js) when minified and `1 KB` when minified and gzipped.
+Anim is a tiny and bare bones animation library weighing in at [`2.7 KB`](https://raw.github.com/relay/anim/master/anim.js) in plain code, [`2 KB`](https://raw.github.com/relay/anim/master/anim.min.js) when minified and `1 KB` when minified and gzipped.
 
 Why Anim? Because sometimes if you only want a little animation, you may not want to pull in a full fledged library like jQuery which is `90 KB` minified and `32 KB` gzipped.
 
@@ -25,7 +25,7 @@ The ``properties`` object takes the form of:
 * **e** (optional): easing function name. (see above)
 * **u** (optional): unit of measurement. e.g., px, %, pt
 
-This function returns an object with one method ("then"), which allows you to add a callback function that is called after the animation is done.
+This function returns an object with one method ("anim"), which allows you to start another animation after the first one is done. If that second function is called with one parameter, it is assumed to be a callback function and is called after the last animation is done.
 
 Examples:
 =====
@@ -37,9 +37,9 @@ Examples:
     anim(document.body, {scrollTop: 500},   5,    "lin");
 
     //run 2 animations one after the other
-    anim(box, {height: 300}, 2).then(function() { anim(box, {width: 300}, 2) });
+    anim(box, {height: 300}, 2).anim(box, {width: 300}, 2).anim(function() { alert("all done") });
 
 
 Support:
 =====
-Supports IE6+, Firefox 2+, Chrome
+Supports IE6+, Firefox 2+, Chrome, iOS, Android
