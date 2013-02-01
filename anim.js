@@ -19,7 +19,11 @@ A = function(n, g, t, e) {
   if(n.charAt) n = document.getElementById(n);
 
   var a, o, c,
-    cb = function() {c && c()};
+    q = [],
+    cb = function(i) {
+      (i = q.shift()) && i[1] ? A.apply(this, i).anim(cb) : i[0]()
+    },
+    cb1 = cb;
 
   for(a in g) {
     o = g[a];
@@ -27,11 +31,16 @@ A = function(n, g, t, e) {
     if(!o.to && o.to !== 0) o = {to: o};  //shorthand
 
     A.defs(o, n, a, e);  //set defaults
-    A.iter(o, /color/i.test(a) ? A.fx.color : (A.fx[a] || A.fx._), t*1000, cb);
-    cb = 0
+    A.iter(o, /color/i.test(a) ? A.fx.color : (A.fx[a] || A.fx._), t*1000, cb1);
+    cb1 = 0
   }
 
-  return {then: function(x) {c = x}}
+  return {
+    anim: function() {
+      q.push([].slice.call(arguments));
+      return this
+    }
+  }
 };
 
 A.defs = function(o, n, a, e, s) {
