@@ -19,52 +19,45 @@ div {position:absolute}
 function $(id) {return document.getElementById(id)}
 
 function cloud1() {
-  anim($("c1"), {left:"400px", backgroundColor:"#ddf"}, 15).then(function() {
-    anim($("c1"), {left:"100px", backgroundColor:"#fff"}, 15).then(cloud1);
-  });
+  anim($("c1"), {left:"400px", backgroundColor:"#ddf"}, 17)
+  .anim($("c1"), {left:"100px", backgroundColor:"#fff"}, 17)
+  .anim(cloud1);
 }
 
 function cloud2() {
   setTimeout(function() {
-    anim($("c2"), {scrollTop:200}, 17);
-    anim($("c2"), {left:"600px"}, 17).then(function() {
-      anim($("c2"), {scrollTop:0}, 17);
-      anim($("c2"), {left:"350px"}, 17).then(cloud2);
-    });
+    anim($("c2"), {scrollTop:200}, 17)
+    .anim($("c2"), {scrollTop:0}, 17);
+    anim($("c2"), {left:"600px"}, 17)
+    .anim($("c2"), {left:"350px"}, 17).anim(cloud2);
   }, 1000);
 }
 
 function cloud1b() {
-  anim($("c1"), {height:{to:"110px"},borderWidth:{to:"8px"}}, 3, "ease");
-  anim($("c2"), {height:{to:"110px"},borderWidth:{to:"8px"}}, 3, "ease").then(function() {
-    anim($("c1"), {height:{to:"100px"},borderWidth:{to:"1px"}}, 3, "ease");
-    anim($("c2"), {height:{to:"100px"},borderWidth:{to:"1px"}}, 3, "ease").then(cloud1b);
-  });
+  anim($("c1"), {height:{to:"110px"},borderWidth:{to:"8px"}}, 3, "ease")
+  .anim($("c1"), {height:{to:"100px"},borderWidth:{to:"1px"}}, 3, "ease");
+  anim($("c2"), {height:{to:"110px"},borderWidth:{to:"8px"}}, 3, "ease")
+  .anim($("c2"), {height:{to:"100px"},borderWidth:{to:"1px"}}, 3, "ease").anim(cloud1b);
 }
 
 function car() {
-  anim($("a"),{left:{to:"600px"},fontSize:{to:60},opacity:0.3}, 5, "ease").then(function() {
-    anim($("a"),{left:{to:"150px"},fontSize:{to:21}, opacity:{fr:0.3, to:1}}, 5, "ease").then(car);
-  });
+  anim($("a"),{left:{to:"600px"},fontSize:{to:60},opacity:0.3}, 5, "ease")
+  .anim($("a"),{left:{to:"150px"},fontSize:{to:21}, opacity:{fr:0.3, to:1}}, 5, "ease").anim(car);
 }
 
 function grass() {
-  anim($("g"), {backgroundColor:{to:"#6b6"}}, 0.6, "ease").then(function() {
-    anim($("g"), {backgroundColor:{to:"#8d8"}}, 0.6, "ease").then(grass);
-  });
+  anim($("g"), {backgroundColor:{to:"#6b6"}}, 0.6, "ease")
+  .anim($("g"), {backgroundColor:{to:"#8d8"}}, 0.6, "ease").anim(grass);
 }
 
 function bee() {
-  anim($("b"), {left:{to:300, from:200}}, 0.5, "ease").then(function() {
-    anim($("b"), {top:{to:500, from:400}}, 0.5, "ease").then(function() {
-      anim($("b"), {left:{to:200, from:300}}, 0.5, "ease").then(function() {
-        anim($("b"), {top:{to:400, from:500}}, 0.5, "ease").then(bee);
-      });
-    });
-  });
-  anim($("b"), {padding:{to:10}}, 1).then(function() {
-    anim($("b"), {padding:{to:5}}, 1)
-  });
+  anim($("b"), {left:{to:300, from:200}}, 0.5, "ease")
+  .anim($("b"), {top:{to:500, from:400}}, 0.5, "ease")
+  .anim($("b"), {left:{to:200, from:300}}, 0.5, "ease")
+  .anim($("b"), {top:{to:400, from:500}}, 0.5, "ease").anim(bee);
+
+  anim($("b"), {padding:{to:10}}, 1)
+  .anim($("b"), {padding:{to:5}}, 1)
 }
 
 cloud1();
