@@ -1,7 +1,9 @@
 anim
 ====
 
-Anim is a tiny and bare bones animation library weighing in at `2.5 KB` in plain code, `1.9 KB` when minified and `1 KB` when minified and gzipped.
+Anim is a tiny and bare bones animation library weighing in at [`2.5 KB`](https://raw.github.com/relay/anim/master/anim.js) in plain code, [`1.9 KB`](https://raw.github.com/relay/anim/master/anim.min.js) when minified and `1 KB` when minified and gzipped.
+
+Why Anim? Because sometimes if you only want a little animation, you may not want to pull in a full fledged library like jQuery which is `90 KB` minified and `32 KB` gzipped.
 
 Usage:
 =====
