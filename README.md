@@ -40,6 +40,10 @@ Examples:
     anim(box, {height: 300}, 2).anim(box, {width: 300}, 2).anim(function() { alert("all done") });
 
 
+Demo
+=====
+http://relay.github.com/anim_demo.html
+
 Support:
 =====
 Supports IE6+, Firefox 2+, Chrome, iOS, Android
