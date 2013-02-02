@@ -21,7 +21,7 @@ A = function(n, g, t, e) {
   var a, o, c,
     q = [],
     cb = function(i) {
-      (i = q.shift()) && (i[1] ? A.apply(this, i).anim(cb) : i[0]())
+      if(i = q.shift()) i[1] ? A.apply(this, i).anim(cb) : i[0]()
     },
     cb1 = cb;
 
