@@ -45,6 +45,7 @@ A = function(n, g, t, e) {
 
 A.defs = function(o, n, a, e, s) {
   s = n.style;
+  //if(!a in s && (A.pf || A._pf(s, a)) in s) a = A.pf + a;  //prefix matching
   o.a = a;
   o.n = n;
   o.s = (a in s) ? s : n;  //n.style||n
@@ -52,11 +53,16 @@ A.defs = function(o, n, a, e, s) {
 
   o.fr = o.fr || (o.fr === 0 ? 0 :
         o.s == n ? n[a] :
-        n.currentStyle ? n.currentStyle[a] :
-        getComputedStyle(n, null)[a]);
+        (window.getComputedStyle ? getComputedStyle(n, null) : n.currentStyle)[a]);
 
   o.u = /\D+$/.exec(o.fr) || /\D+$/.exec(o.to) || 0
 };
+
+//A._pf = function(s, a, p, i, j) {
+//  p = A._pf.p;
+//  for(i=0; j=p[i++];) if(j + a in s) return A.pf = j;
+//};
+//A._pf.p = ["-webkit-","-ms-","-moz-","-o-"];
 
 A.iter = function(o, fn, t, cb) {
   var i, p,
@@ -94,16 +100,21 @@ A.fx = {
   _: function(o, n, to, fr, a, e) {
     fr = parseFloat(fr),
     to = parseFloat(to),
-    o.s[a] = (o.p*(to - fr) + fr) + o.u
+    o.s[a] = (o.p >= 1 ? to : (o.p*(to - fr) + fr)) + o.u
   },
 
   width: function(o, n, to, fr, a, e) {
-    fr = parseFloat(fr),
-    A.fx._(o, n, to, !isNaN(fr) ? fr : a == "width" ? n.clientWidth : n.clientHeight, a, e);
+    if(isNaN(o._fr))
+      o._fr = !isNaN(fr = parseFloat(fr)) ? fr : a == "width" ? n.clientWidth : n.clientHeight;
+    A.fx._(o, n, to, o._fr, a, e)
   },
 
   opacity: function(o, n, to, fr, a, e) {
-    fr = fr*1 || 1;
+    if(isNaN(fr = fr || o._fr))
+      fr = n.style,
+      fr.zoom = 1,
+      fr = o._fr = (/alpha\(opacity=(\d+)\b/i.exec(fr.filter) || {})[1]/100 || 1;
+    fr *= 1;
     to = (o.p*(to - fr) + fr);
     n = n.style;
     if(a in n) {
@@ -125,7 +136,7 @@ A.fx = {
     v = [0, 0, 0, o.p*(to[3] - fr[3]) + 1*fr[3]];
     for(i=2; i>=0; i--) v[i] = Math.round(o.p*(to[i] - fr[i]) + 1*fr[i]);
 
-    if(v[3] == 255 || A.rgbaIE) v.pop();
+    if(v[3] >= 1 || A.rgbaIE) v.pop();
 
     try {
       o.s[a] = (v.length > 3 ? "rgba(" : "rgb(") + v.join(",") + ")"
@@ -151,3 +162,4 @@ A.toRGBA = function(s, v) {
 
 return A
 }();
+
