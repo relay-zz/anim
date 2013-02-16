@@ -16,14 +16,15 @@ var anim = function(A) {
 "use strict";
 
 A = function(n, g, t, e) {
-  if(n.charAt) n = document.getElementById(n);
-
   var a, o, c,
     q = [],
     cb = function(i) {
-      if(i = q.shift()) i[1] ? A.apply(this, i).anim(cb) : i[0]()
+      if(i = q.shift()) i[1] ? A.apply(this, i).anim(cb) : i[0] > 0 ? setTimeout(cb, i[0]*1000) : i[0]()
     },
     cb1 = cb;
+
+  if(n.charAt) n = document.getElementById(n);
+  if(n > 0) g = {}, cb(q = [[n]]);
 
   for(a in g) {
     o = g[a];
@@ -45,7 +46,6 @@ A = function(n, g, t, e) {
 
 A.defs = function(o, n, a, e, s) {
   s = n.style;
-  //if(!a in s && (A.pf || A._pf(s, a)) in s) a = A.pf + a;  //prefix matching
   o.a = a;
   o.n = n;
   o.s = (a in s) ? s : n;  //n.style||n
@@ -57,12 +57,6 @@ A.defs = function(o, n, a, e, s) {
 
   o.u = /\D+$/.exec(o.fr) || /\D+$/.exec(o.to) || 0
 };
-
-//A._pf = function(s, a, p, i, j) {
-//  p = A._pf.p;
-//  for(i=0; j=p[i++];) if(j + a in s) return A.pf = j;
-//};
-//A._pf.p = ["-webkit-","-ms-","-moz-","-o-"];
 
 A.iter = function(o, fn, t, cb) {
   var i, p,
@@ -98,7 +92,7 @@ A.iter = function(o, fn, t, cb) {
 
 A.fx = {
   _: function(o, n, to, fr, a, e) {
-    fr = parseFloat(fr),
+    fr = parseFloat(fr) || 0,
     to = parseFloat(to),
     o.s[a] = (o.p >= 1 ? to : (o.p*(to - fr) + fr)) + o.u
   },
@@ -162,4 +156,3 @@ A.toRGBA = function(s, v) {
 
 return A
 }();
-
