@@ -43,6 +43,9 @@ Examples:
     //run 2 animations one after the other
     anim(box, {height: 300}, 2).anim(box, {width: 300}, 2).anim(function() { alert("all done") });
 
+    //run 2 animations with a 1 second delay in between
+    anim(box, {height: 300}, 2).anim(1).anim(box, {width: 300}, 2);
+
 
 Demo
 =====
