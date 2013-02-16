@@ -8,11 +8,15 @@ Why Anim? Because sometimes if you only want a little animation, you may not wan
 Usage:
 =====
 ``anim(node, properties, duration, ease*)``
+or ``anim(delay)``
+or ``anim(callbackFunction)``
 
-* **node**: the node to animate
+* **node**: the node to animate, or the node's ID
 * **properties**: a map of CSS properties to animate (see below)
 * **duration**: time in seconds to run animation. e.g., 3.5 is 3.5 seconds
 * **ease** (optional): easing function name. Choose from "ease-in", "ease" (means: ease-in-out), "lin" (means: linear), and undefined means "ease-out". This overrides the individual easing properties
+* **delay** how long to wait before starting the next animation
+* **callbackFunction** function to call after animation finished
 
 The ``properties`` object takes the form of:
 
