@@ -20,21 +20,18 @@ A = function(n, g, t, e) {
     q = [],
     cb = function(i) {
       if(i = q.shift()) i[1] ? A.apply(this, i).anim(cb) : i[0] > 0 ? setTimeout(cb, i[0]*1000) : i[0]()
-    },
-    cb1 = cb;
+    };
 
   if(n.charAt) n = document.getElementById(n);
   if(n > 0) g = {}, cb(q = [[n]]);
 
   for(a in g) {
     o = g[a];
-
-    if(!o.to && o.to !== 0) o = {to: o};  //shorthand
-
+    if(!o.to && o.to !== 0) o = g[a] = {to: o};  //shorthand
     A.defs(o, n, a, e);  //set defaults
-    A.iter(o, /color/i.test(a) ? A.fx.color : (A.fx[a] || A.fx._), t*1000, cb1);
-    cb1 = 0
   }
+
+  A.iter(g, t*1000, cb);
 
   return {
     anim: function() {
@@ -49,43 +46,60 @@ A.defs = function(o, n, a, e, s) {
   o.a = a;
   o.n = n;
   o.s = (a in s) ? s : n;  //n.style||n
-  if(e) o.e = e;
+  o.e = o.e || e;
 
   o.fr = o.fr || (o.fr === 0 ? 0 :
         o.s == n ? n[a] :
         (window.getComputedStyle ? getComputedStyle(n, null) : n.currentStyle)[a]);
 
-  o.u = /\D+$/.exec(o.fr) || /\D+$/.exec(o.to) || 0
+  o.u = /\D+$/.exec(o.fr) || /\D+$/.exec(o.to) || 0;
+
+  o.fn = /color/i.test(a) ? A.fx.color : (A.fx[a] || A.fx._)
 };
 
-A.iter = function(o, fn, t, cb) {
-  var i, p,
-    e = o.e,
+A.iter = function(g, t, cb) {
+  var i, o, p, e,
     z = +new Date + t,
 
   _ = function() {
     i = z - new Date().getTime();
 
-    if(i < 50) return o.p = 1, fn(o, o.n, o.to, o.fr, o.a, o.e), cb && cb();
+    if(i < 50) {
+      for(o in g)
+        o = g[o],
+        o.p = 1,
+        o.fn(o, o.n, o.to, o.fr, o.a, o.e),
 
-    p = i/t;
-    if(e == "lin") {
-      p = 1 - p
+        cb && cb(), cb = 0
 
-    } else if(e == "ease") {
-      p = (0.5 - p)*2;
-      p = 1 - ((p*p*p - p*3) + 2)/4
+    } else {
 
-    } else if(e == "ease-in") {
-      p = 1 - p;
-      p = p*p*p
+      i = i/t;
 
-    } else {  //ease-in-out
-      p = 1 - p*p*p
+      for(o in g) {
+        o = g[o];
+        e = o.e;
+        p = i;
+
+        if(e == "lin") {
+          p = 1 - p
+  
+        } else if(e == "ease") {
+          p = (0.5 - p)*2;
+          p = 1 - ((p*p*p - p*3) + 2)/4
+  
+        } else if(e == "ease-in") {
+          p = 1 - p;
+          p = p*p*p
+  
+        } else {  //ease-in-out
+          p = 1 - p*p*p
+        }
+        o.p = p;
+        o.fn(o, o.n, o.to, o.fr, o.a, o.e)
+      }
+      setTimeout(_, 50)
     }
-    o.p = p;
-    fn(o, o.n, o.to, o.fr, o.a, o.e);
-    setTimeout(_, 50)
   }
   _();
 };
