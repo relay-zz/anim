@@ -1,71 +1,100 @@
 <!doctype html>
 <html>
 <head><title>Animations by Anim</title>
+<script src="https://raw.github.com/relay/anim/master/anim.min.js"></script>
 <style>
-body {background:#ccf; font:bold 1em sans-serif; text-align:center}
-div {position:absolute}
-.cloud {background:#fff; width:200px; height:80px; color:#ccf; border:1px solid #bbe}
+body {margin:1%; padding:0; background:#fff; white-space:nowrap}
+table, td, tr {margin:0; padding:0; border:0; border-collapse:collapse}
+td {width:50%; padding:6px 3px; vertical-align:middle; border:1px solid #eee}
+textarea {height:100px; width:98%; white-space:normal}
+.sect div {padding:2px; background:#dd5; border:1px solid #aa0; margin:2px}
 </style>
 </head>
 <body>
-<div id="c1" class="cloud" style="top:50px; left:50px"><br>cloud</div>
-<div id="c2" class="cloud" style="top:120px; left:350px; overflow:auto"><script>document.write(new Array(100).join("1 0 "));</script></div>
-<div id="g" style="bottom:0; left:0; right:0; width:100%; height:100px; background:#8d8; color:#292; line-height:100px">grass</div>
-<div id="a" style="bottom:80px; left:150px; width:200px; font-size:21pt; height:100px; line-height:100px; color:#600; background:#d77">car</div>
-<div id="b" style="left:200px; top:400px; color:#cc0; background:yellow; padding:5px">bee</div>
 
-<script src="anim2.js"></script>
-<script>
-function $(id) {return document.getElementById(id)}
+<table cellspacing=0 style="width:100%">
+  <tr>
+    <td class="sect">
+      <div id=a1 style="width:0">ease-in</div>
+      <div id=a2 style="width:0">ease-out</div>
+      <div id=a3 style="width:0">ease</div>
+      <div id=a4 style="width:0">linear</div>
+    </td><td>
+      <textarea id=at readonly>
+      anim("a1", {width:"90%"}, 3, "ease-in").anim(1).anim("a1", {width:0}, 1, "ease-in");
+      anim("a2", {width:"90%"}, 3, "ease-out").anim(1).anim("a2", {width:0}, 1, "ease-out");
+      anim("a3", {width:"90%"}, 3, "ease").anim(1).anim("a3", {width:0}, 1, "ease");
+      anim("a4", {width:"90%"}, 3, "lin").anim(1).anim("a4", {width:0}, 1, "lin").anim(1).anim(goA);
+      </textarea>
+    <script>function goA() { eval(document.getElementById("at").value) } goA();</script>
+    </td>
+  </tr>
 
-function cloud1() {
-  anim($("c1"), {left:"400px", backgroundColor:"#ddf"}, 17)
-  .anim($("c1"), {left:"100px", backgroundColor:"#fff"}, 17)
-  .anim(cloud1);
-}
+  <tr>
+    <td class="sect" style="height:180px">
+      <div id=b1 style="width:60px; height:60px"> </div>
+    </td><td>
+      <textarea id=bt readonly>
+      anim("b1", {width:"150px", height:"150px"}, 0.5).anim(0.5)
+      .anim("b1", {width:"60px", height:"60px"}, 0.5).anim(0.5).anim(goB);
+      </textarea>
+    <script>function goB() { eval(document.getElementById("bt").value) } goB();</script>
+    </td>
+  </tr>
 
-function cloud2() {
-  setTimeout(function() {
-    anim($("c2"), {scrollTop:200}, 17)
-    .anim($("c2"), {scrollTop:0}, 17);
-    anim($("c2"), {left:"600px"}, 17)
-    .anim($("c2"), {left:"350px"}, 17).anim(cloud2);
-  }, 1000);
-}
+  <tr>
+    <td class="sect">
+      <div id=c1 style="width:60px; height:60px"> </div>
+    </td><td>
+      <textarea id=ct readonly>
+      anim("c1", {borderRadius:"30px", marginLeft:"50%"}, 1)
+      .anim("c1", {borderRadius:0, marginLeft:0}, 1).anim(goC);
+      </textarea>
+    <script>function goC() { eval(document.getElementById("ct").value) } goC();</script>
+    </td>
+  </tr>
 
-function cloud1b() {
-  anim($("c1"), {height:{to:"110px"},borderWidth:{to:"8px"}}, 3, "ease")
-  .anim($("c1"), {height:{to:"100px"},borderWidth:{to:"1px"}}, 3, "ease");
-  anim($("c2"), {height:{to:"110px"},borderWidth:{to:"8px"}}, 3, "ease")
-  .anim($("c2"), {height:{to:"100px"},borderWidth:{to:"1px"}}, 3, "ease").anim(cloud1b);
-}
+  <tr>
+    <td class="sect">
+      <div id=d1 style="padding:1em; border:0; background-color:#fff">color</div>
+    </td><td>
+      <textarea id=dt readonly>
+      anim("d1", {backgroundColor:"#f66"}, 1)
+      .anim("d1", {backgroundColor:"#6f6"}, 1)
+      .anim("d1", {backgroundColor:"#66f"}, 1)
+      .anim(0.5).anim(goD);
+      </textarea>
+    <script>function goD() { eval(document.getElementById("dt").value) } goD();</script>
+    </td>
+  </tr>
 
-function car() {
-  anim($("a"),{left:{to:"600px"},fontSize:{to:60},opacity:0.3}, 5, "ease")
-  .anim($("a"),{left:{to:"150px"},fontSize:{to:21}, opacity:{fr:0.3, to:1}}, 5, "ease").anim(car);
-}
+  <tr>
+    <td class="sect">
+      <div id=e1 style="padding:3px; font-size:12pt">color</div>
+    </td><td>
+      <textarea id=et readonly>
+      anim("e1", {fontSize:{fr:"12pt", to:30}}, 1)
+      .anim("e1", {fontSize:{fr:"30pt", to:12}}, 1).anim(1).anim(goE);
+      </textarea>
+    <script>function goE() { eval(document.getElementById("et").value) } goE();</script>
+    </td>
+  </tr>
 
-function grass() {
-  anim($("g"), {backgroundColor:{to:"#6b6"}}, 0.6, "ease")
-  .anim($("g"), {backgroundColor:{to:"#8d8"}}, 0.6, "ease").anim(grass);
-}
+  <tr>
+    <td class="sect">
+      <div id=f1 style="padding:0px; overflow:hidden; height:1px">the quick brown<br>fox jumped over<br>the lazy dog</div>
+    </td><td>
+      <textarea id=ft readonly>
+      var f1n = document.getElementById("f1"), f1n_h = f1n.style.height;
+      f1n.style.height = "auto";
+      var f1n_i = f1n.clientHeight;
+      f1n.style.height = f1n_h;
+      anim("f1", {height: f1n_i}, 1).anim("f1", {height:0}, 1).anim(1).anim(goF);
+      </textarea>
+    <script>function goF() { eval(document.getElementById("ft").value) } goF();</script>
+    </td>
+  </tr>
+</table>
 
-function bee() {
-  anim($("b"), {left:{to:300, from:200}}, 0.5, "ease")
-  .anim($("b"), {top:{to:500, from:400}}, 0.5, "ease")
-  .anim($("b"), {left:{to:200, from:300}}, 0.5, "ease")
-  .anim($("b"), {top:{to:400, from:500}}, 0.5, "ease").anim(bee);
-
-  anim($("b"), {padding:{to:10}}, 1)
-  .anim($("b"), {padding:{to:5}}, 1)
-}
-
-cloud1();
-cloud1b();
-cloud2();
-car();
-grass();
-bee();
-</script>
 </body>
 </html>
