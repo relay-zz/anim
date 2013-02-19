@@ -19,7 +19,7 @@ A = function(n, g, t, e) {
   var a, o, c,
     q = [],
     cb = function(i) {
-      if(i = q.shift()) i[1] ? A.apply(this, i).anim(cb) : i[0] > 0 ? setTimeout(cb, i[0]*1000) : i[0]()
+      if(i = q.shift()) i[1] ? A.apply(this, i).anim(cb) : i[0] > 0 ? setTimeout(cb, i[0]*1000) : (i[0](), cb())
     };
 
   if(n.charAt) n = document.getElementById(n);
@@ -48,11 +48,10 @@ A.defs = function(o, n, a, e, s) {
   o.s = (a in s) ? s : n;  //n.style||n
   o.e = o.e || e;
 
-  o.fr = o.fr || (o.fr === 0 ? 0 :
-        o.s == n ? n[a] :
+  o.fr = o.fr || (o.fr === 0 ? 0 : o.s == n ? n[a] :
         (window.getComputedStyle ? getComputedStyle(n, null) : n.currentStyle)[a]);
 
-  o.u = /\D+$/.exec(o.fr) || /\D+$/.exec(o.to) || 0;
+  o.u = (/\d(\D+)$/.exec(o.to) || /\d(\D+)$/.exec(o.fr) || [0, 0])[1];
 
   o.fn = /color/i.test(a) ? A.fx.color : (A.fx[a] || A.fx._)
 };
@@ -107,12 +106,12 @@ A.iter = function(g, t, cb) {
 A.fx = {
   _: function(o, n, to, fr, a, e) {
     fr = parseFloat(fr) || 0,
-    to = parseFloat(to),
+    to = parseFloat(to) || 0,
     o.s[a] = (o.p >= 1 ? to : (o.p*(to - fr) + fr)) + o.u
   },
 
   width: function(o, n, to, fr, a, e) {
-    if(isNaN(o._fr))
+    if(!(o._fr >= 0))
       o._fr = !isNaN(fr = parseFloat(fr)) ? fr : a == "width" ? n.clientWidth : n.clientHeight;
     A.fx._(o, n, to, o._fr, a, e)
   },
