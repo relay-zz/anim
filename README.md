@@ -9,6 +9,12 @@ demo
 =====
 http://relay.github.com/anim_demo.html
 
+features
+=====
+* Simple chaining syntax ``anim(...).anim(...).anim(...)``
+* 3 easing functions
+* shorthand syntax ``anim("div1", {opacity: 0.6}, 2)``
+
 usage:
 =====
 ``anim(node, properties, duration, ease*)``
