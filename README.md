@@ -5,7 +5,11 @@ Anim is a tiny and bare bones animation library weighing in at [`3 KB`](https://
 
 Why Anim? Because sometimes if you only want a little animation, you may not want to pull in a full fledged library like jQuery which is `90 KB` minified and `32 KB` gzipped.
 
-Usage:
+demo
+=====
+http://relay.github.com/anim_demo.html
+
+usage:
 =====
 ``anim(node, properties, duration, ease*)``
 or ``anim(delay)``
@@ -31,7 +35,7 @@ The ``properties`` object takes the form of:
 
 This function returns an object with one method ("anim"), which allows you to start another animation after the first one is done. If that second function is called with one parameter, it is assumed to be a callback function and is called after the last animation is done.
 
-Examples:
+examples:
 =====
     anim(box, {opacity: {to: 0.2, from: 1}},     2);  //long form specifying 'to' and 'from'
     anim(box, {opacity: 0.2},                    2);
@@ -47,10 +51,6 @@ Examples:
     anim(box, {height: 300}, 2).anim(1).anim(box, {width: 300}, 2);
 
 
-Demo
-=====
-http://relay.github.com/anim_demo.html
-
-Support:
+support:
 =====
 Supports IE6+, Firefox 2+, Chrome, iOS, Android
