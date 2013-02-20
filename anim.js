@@ -57,7 +57,7 @@ A.defs = function(o, n, a, e, s) {
 };
 
 var timeout = function(w, a) {
-  return w["webkitR"+a] || w["mozR"+a] || w["msR"+a]  || w["r"+a]|| w["oR"+a] || function(f) {setTimeout(f, 50)}
+  return w["webkitR"+a] || w["mozR"+a] || w["msR"+a]  || w["r"+a]|| w["oR"+a]
 }(window, "equestAnimationFrame");
 
 A.iter = function(g, t, cb) {
@@ -101,7 +101,7 @@ A.iter = function(g, t, cb) {
         o.p = p;
         o.fn(o, o.n, o.to, o.fr, o.a, o.e)
       }
-      timeout(_)
+      timeout ? timeout(_) : setTimeout(_, 50)
     }
   }
   _();
