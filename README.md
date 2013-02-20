@@ -1,7 +1,7 @@
 anim
 ====
 
-Anim is a tiny and bare bones animation library weighing in at [`3 KB`](https://raw.github.com/relay/anim/master/anim.js) in plain code, [`2 KB`](https://raw.github.com/relay/anim/master/anim.min.js) when minified and `1.2 KB` when minified and gzipped.
+Anim is a tiny and bare bones animation library weighing in at [`3 KB`](https://raw.github.com/relay/anim/master/anim.js) in plain code, [`2 KB`](https://raw.github.com/relay/anim/master/anim.min.js) when minified and `1.3 KB` when minified and gzipped.
 
 Why Anim? Because sometimes if you only want a little animation, you may not want to pull in a full fledged library like jQuery which is `90 KB` minified and `32 KB` gzipped.
 
@@ -11,7 +11,7 @@ http://relay.github.com/anim_demo.html
 
 features
 =====
-* Simple chaining syntax ``anim(...).anim(...).anim(...)``
+* Simple chaining syntax ``anim(---).anim(---).anim(---)``
 * 3 easing functions
 * shorthand syntax ``anim("div1", {opacity: 0.6}, 2)``
 
@@ -60,3 +60,5 @@ examples:
 support:
 =====
 Supports IE6+, Firefox 2+, Chrome, iOS, Android
+
+Uses ``window.requestAnimationFrame()`` for fluidity
