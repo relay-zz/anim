@@ -56,12 +56,16 @@ A.defs = function(o, n, a, e, s) {
   o.fn = /color/i.test(a) ? A.fx.color : (A.fx[a] || A.fx._)
 };
 
+var timeout = function(w, a) {
+  return w["webkitR"+a] || w["mozR"+a] || w["msR"+a]  || w["r"+a]|| w["oR"+a] || function(f) {setTimeout(f, 50)}
+}(window, "equestAnimationFrame");
+
 A.iter = function(g, t, cb) {
-  var i, o, p, e,
+  var _, i, o, p, e,
     z = +new Date + t,
 
-  _ = function() {
-    i = z - new Date().getTime();
+  _ = function(now) {
+    i = z - (now || new Date().getTime());
 
     if(i < 50) {
       for(o in g)
@@ -97,7 +101,7 @@ A.iter = function(g, t, cb) {
         o.p = p;
         o.fn(o, o.n, o.to, o.fr, o.a, o.e)
       }
-      setTimeout(_, 50)
+      timeout(_)
     }
   }
   _();
