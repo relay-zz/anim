@@ -5,6 +5,8 @@ Anim is a tiny and bare bones animation library weighing in at [`3 KB`](https://
 
 Why Anim? Because sometimes if you only want a little animation, you may not want to pull in a full fledged library like jQuery which is `90 KB` minified and `32 KB` gzipped.
 
+Anim can animate any property that accepts number and color values including but not limited to backgroundColor, opacity, width, scrollTop, etc.
+
 demo
 =====
 http://relay.github.com/anim_demo.html
@@ -61,4 +63,4 @@ support:
 =====
 Supports IE6+, Firefox 2+, Chrome, iOS, Android
 
-Uses ``window.requestAnimationFrame()`` for fluidity
+If ``requestAnimationFrame`` is available it is used, which provides the highest frame rate and throttling if the CPU is busy or if another tab is focused.
