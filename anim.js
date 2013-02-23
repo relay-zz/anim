@@ -23,7 +23,7 @@ A = function(n, g, t, e) {
     };
 
   if(n.charAt) n = document.getElementById(n);
-  if(n > 0) g = {}, cb(q = [[n]]);
+  if(n > 0 || !n) g = {}, t = 0, cb(q = [[n || 0.1]]);
 
   for(a in g) {
     o = g[a];
@@ -57,7 +57,7 @@ A.defs = function(o, n, a, e, s) {
 };
 
 var timeout = function(w, a) {
-  return w["webkitR"+a] || w["mozR"+a] || w["msR"+a]  || w["r"+a]|| w["oR"+a]
+  return w["webkitR"+a] || w["mozR"+a] || w["msR"+a] || w["r"+a] || w["oR"+a]
 }(window, "equestAnimationFrame");
 
 A.iter = function(g, t, cb) {
@@ -71,9 +71,9 @@ A.iter = function(g, t, cb) {
       for(o in g)
         o = g[o],
         o.p = 1,
-        o.fn(o, o.n, o.to, o.fr, o.a, o.e),
+        o.fn(o, o.n, o.to, o.fr, o.a, o.e);
 
-        cb && cb(), cb = 0
+      cb && cb()
 
     } else {
 
