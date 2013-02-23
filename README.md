@@ -1,7 +1,7 @@
 anim
 ====
 
-Anim is a tiny and bare bones animation library weighing in at [`3 KB`](https://raw.github.com/relay/anim/master/anim.js) in plain code, [`2 KB`](https://raw.github.com/relay/anim/master/anim.min.js) when minified and `1.3 KB` when minified and gzipped.
+Anim is a tiny and bare bones animation library weighing in at [`3 KB`](https://raw.github.com/relay/anim/master/anim.js) in plain code, [`2.3 KB`](https://raw.github.com/relay/anim/master/anim.min.js) when minified and `1.3 KB` when minified and gzipped.
 
 Why Anim? Because sometimes if you only want a little animation, you may not want to pull in a full fledged library like jQuery which is `90 KB` minified and `32 KB` gzipped.
 
@@ -52,10 +52,12 @@ examples:
     anim(box, {marginLeft: "2%", fontSize: "20pt"}, 2, "ease-out");
     anim(document.body, {scrollTop: 500},   5,    "lin");
 
-    //run 2 animations one after the other
-    anim(box, {height: 300}, 2).anim(box, {width: 300}, 2).anim(function() { alert("all done") });
+run 2 animations one after the other
 
-    //run 2 animations with a 1 second delay in between
+    anim(box, {height: 300}, 2).anim(box, {width: 300}, 2).anim(function() { alert("all done") });
+ 
+run 2 animations with a 1 second delay in between
+
     anim(box, {height: 300}, 2).anim(1).anim(box, {width: 300}, 2);
 
 
