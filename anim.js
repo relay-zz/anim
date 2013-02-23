@@ -19,11 +19,13 @@ A = function(n, g, t, e) {
   var a, o, c,
     q = [],
     cb = function(i) {
-      if(i = q.shift()) i[1] ? A.apply(this, i).anim(cb) : i[0] > 0 ? setTimeout(cb, i[0]*1000) : (i[0](), cb())
+      if(i = q.shift()) i[1] ?
+          A.apply(this, i).anim(cb) :
+          i[0] > 0 ? setTimeout(cb, i[0]*1000) : (i[0](), cb())
     };
 
   if(n.charAt) n = document.getElementById(n);
-  if(n > 0 || !n) g = {}, t = 0, cb(q = [[n || 0.1]]);
+  if(n > 0 || !n) g = {}, t = 0, cb(q = [[n || 0]]);
 
   for(a in g) {
     o = g[a];
@@ -51,7 +53,7 @@ A.defs = function(o, n, a, e, s) {
   o.fr = o.fr || (o.fr === 0 ? 0 : o.s == n ? n[a] :
         (window.getComputedStyle ? getComputedStyle(n, null) : n.currentStyle)[a]);
 
-  o.u = (/\d(\D+)$/.exec(o.to) || /\d(\D+)$/.exec(o.fr) || [0, 0])[1];
+  o.u = (/\d(\D+)$/.exec(o.to) || /\d(\D+)$/.exec(o.fr) || [0, 0])[1];  //units
 
   o.fn = /color/i.test(a) ? A.fx.color : (A.fx[a] || A.fx._)
 };
@@ -95,7 +97,7 @@ A.iter = function(g, t, cb) {
           p = 1 - p;
           p = p*p*p
   
-        } else {  //ease-in-out
+        } else {  //ease-out
           p = 1 - p*p*p
         }
         o.p = p;
@@ -107,7 +109,7 @@ A.iter = function(g, t, cb) {
   _();
 };
 
-A.fx = {
+A.fx = {  //CSS names which need special handling
   _: function(o, n, to, fr, a, e) {
     fr = parseFloat(fr) || 0,
     to = parseFloat(to) || 0,
