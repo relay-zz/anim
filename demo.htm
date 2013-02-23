@@ -7,7 +7,7 @@
 body {margin:1%; padding:0; background:#fff; white-space:nowrap}
 table, td, th, tr {margin:0; padding:0; border:0; border-collapse:collapse}
 td {width:50%; padding:6px 3px; vertical-align:middle; border:1px solid #eee}
-textarea {height:100px; width:98%; white-space:normal}
+textarea {height:100px; width:98%; font-size:9pt}
 .sect div {padding:2px; background:#dd5; border:1px solid #aa0; margin:2px}
 </style>
 </head>
@@ -26,11 +26,11 @@ textarea {height:100px; width:98%; white-space:normal}
       <div id=a4 style="width:0">linear</div>
     </td><td>
       <textarea id=at readonly>
-      anim("a1", {width:"90%"}, 3, "ease-in").anim(1).anim("a1", {width:0}, 1, "ease-in");
-      anim("a2", {width:"90%"}, 3, "ease-out").anim(1).anim("a2", {width:0}, 1, "ease-out");
-      anim("a3", {width:"90%"}, 3, "ease").anim(1).anim("a3", {width:0}, 1, "ease");
-      anim("a4", {width:"90%"}, 3, "lin").anim(1).anim("a4", {width:0}, 1, "lin").anim(1)
-      .anim(goA);
+anim("a1", {width:"90%"}, 3, "ease-in").anim(1).anim("a1", {width:0}, 1, "ease-in");
+anim("a2", {width:"90%"}, 3, "ease-out").anim(1).anim("a2", {width:0}, 1, "ease-out");
+anim("a3", {width:"90%"}, 3, "ease").anim(1).anim("a3", {width:0}, 1, "ease");
+anim("a4", {width:"90%"}, 3, "lin").anim(1).anim("a4", {width:0}, 1, "lin").anim(1)
+.anim(goA);
       </textarea>
     <script>function goA() { eval(byId("at").value) } goA();</script>
     </td>
@@ -41,9 +41,10 @@ textarea {height:100px; width:98%; white-space:normal}
       <div id=b1 style="width:60px; height:60px"> </div>
     </td><td>
       <textarea id=bt readonly>
-      anim("b1", {width:"150px", height:"150px"}, 0.5).anim(0.5)
-      .anim("b1", {width:{to:"60px", e:"ease-in"}, height:"60px"}, 0.5).anim(0.5)
-      .anim(goB);
+anim(1)
+.anim("b1", {width:"150px", height:"150px"}, 0.5).anim(0.5)
+.anim("b1", {width:{to:"60px", e:"ease-in"}, height:"60px"}, 0.5).anim(0.5)
+.anim(goB);
       </textarea>
     <script>function goB() { eval(byId("bt").value) } goB();</script>
     </td>
@@ -54,11 +55,11 @@ textarea {height:100px; width:98%; white-space:normal}
       <div id=c1 style="width:60px; height:60px; position:relative"> </div>
     </td><td>
       <textarea id=ct readonly>
-      anim("c1", {borderRadius:"30px", left:"50%"}, 1.5, "ease-out")
-      .anim(0.1)
-      .anim("c1", {borderRadius:0, left:0}, 1.5, "ease-in")
-      .anim(1)
-      .anim(goC);
+anim("c1", {borderRadius:"30px", left:"50%"}, 1.5, "ease-out")
+.anim(0.1)
+.anim("c1", {borderRadius:0, left:0}, 1.5, "ease-in")
+.anim(1)
+.anim(goC);
       </textarea>
     <script>function goC() { eval(byId("ct").value) } goC();</script>
     </td>
@@ -66,13 +67,13 @@ textarea {height:100px; width:98%; white-space:normal}
 
   <tr>
     <td class="sect">
-      <div id=d1 style="padding:1em; border:0; background-color:#fff">color</div>
+      <div id=d1 style="padding:1em; display:inline; text-transform:uppercase; border:0; background-color:#fff">color</div>
     </td><td>
       <textarea id=dt readonly>
-      anim("d1", {backgroundColor:"#f66"}, 1).anim(function() {byId("d1").innerHTML="green"})
-      .anim("d1", {backgroundColor:"#6f6"}, 1).anim(function() {byId("d1").innerHTML="blue"})
-      .anim("d1", {backgroundColor:"#66f"}, 1).anim(function() {byId("d1").innerHTML="red"})
-      .anim(goD);
+anim("d1", {backgroundColor:"#f66"}, 1).anim(function() {byId("d1").innerHTML="green"})
+.anim("d1", {backgroundColor:"#6f6"}, 1).anim(function() {byId("d1").innerHTML="blue"})
+.anim("d1", {backgroundColor:"#66f"}, 1).anim(function() {byId("d1").innerHTML="red"})
+.anim(goD);
       </textarea>
     <script>function goD() { eval(byId("dt").value) } goD();</script>
     </td>
@@ -83,10 +84,10 @@ textarea {height:100px; width:98%; white-space:normal}
       <div id=e1 style="padding:3px; font-size:12pt">color</div>
     </td><td>
       <textarea id=et readonly>
-      anim("e1", {fontSize:{fr:"12pt", to:30}, opacity:0.4}, 1)
-      .anim("e1", {fontSize:{fr:"30pt", to:12}, opacity:1}, 1)
-      .anim(1)
-      .anim(goE);
+anim("e1", {fontSize:{fr:"12pt", to:30}, opacity:0.4}, 1)
+.anim("e1", {fontSize:{fr:"30pt", to:12}, opacity:1}, 1)
+.anim(1)
+.anim(goE);
       </textarea>
     <script>function goE() { eval(byId("et").value) } goE();</script>
     </td>
@@ -97,16 +98,16 @@ textarea {height:100px; width:98%; white-space:normal}
       <div id=f1 style="padding:0px; overflow:hidden; height:1px">the quick brown<br>fox jumped over<br>the lazy dog</div>
     </td><td>
       <textarea id=ft readonly>
-      var node = byId("f1");
-      node.style.height = "auto";
-      var newHeight = node.offsetHeight;
-      node.style.height = "1px";
+var node = byId("f1");
+node.style.height = "auto";
+var newHeight = node.offsetHeight;
+node.style.height = "1px";
 
-      anim("f1", {height: newHeight}, 0.5)
-      .anim(1)
-      .anim("f1", {height:0}, 0.5)
-      .anim(1)
-      .anim(goF);
+anim("f1", {height: newHeight}, 0.5)
+.anim(1)
+.anim("f1", {height:0}, 0.5)
+.anim(1)
+.anim(goF);
       </textarea>
     </td>
   </tr>
