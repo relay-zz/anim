@@ -67,12 +67,12 @@ anim("c1", {borderRadius:"30px", left:"50%"}, 1.5, "ease-out")
 
   <tr>
     <td class="sect">
-      <div id=d1 style="padding:1em; display:inline; text-transform:uppercase; border:0; background-color:#fff">color</div>
+      <div id=d1 style="padding:1em; display:inline; font-family:courier; border:1px solid #faa; background-color:#fff">RED</div>
     </td><td>
       <textarea id=dt readonly>
-anim("d1", {backgroundColor:"#f66"}, 1).anim(function() {byId("d1").innerHTML="green"})
-.anim("d1", {backgroundColor:"#6f6"}, 1).anim(function() {byId("d1").innerHTML="blue"})
-.anim("d1", {backgroundColor:"#66f"}, 1).anim(function() {byId("d1").innerHTML="red"})
+anim("d1", {backgroundColor:"#f66", border:10}, 1).anim(function() {byId("d1").innerHTML="GRN"})
+.anim("d1", {backgroundColor:"#6f6", border:0}, 1).anim(function() {byId("d1").innerHTML="BLU"})
+.anim("d1", {backgroundColor:"#66f", borderLeftWidth:10, borderTopWidth:3, borderRightWidth:10, borderBottomWidth:3}, 1).anim(function() {byId("d1").innerHTML="RED"})
 .anim(goD);
       </textarea>
     <script>function goD() { eval(byId("dt").value) } goD();</script>
@@ -81,12 +81,11 @@ anim("d1", {backgroundColor:"#f66"}, 1).anim(function() {byId("d1").innerHTML="g
 
   <tr>
     <td class="sect">
-      <div id=e1 style="padding:3px; font-size:12pt">color</div>
+      <div id=e1 style="padding:3px; font-size:12pt">font size</div>
     </td><td>
       <textarea id=et readonly>
 anim("e1", {fontSize:{fr:"12pt", to:30}, opacity:0.4}, 1)
 .anim("e1", {fontSize:{fr:"30pt", to:12}, opacity:1}, 1)
-.anim(1)
 .anim(goE);
       </textarea>
     <script>function goE() { eval(byId("et").value) } goE();</script>
