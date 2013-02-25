@@ -26,7 +26,7 @@ or ``anim(callbackFunction)``
 * **node**: the node to animate, or the node's ID
 * **properties**: a map of CSS properties to animate (see below)
 * **duration**: time in seconds to run animation. e.g., 3.5 is 3.5 seconds
-* **ease** (optional): easing function name. Choose from "ease-in", "ease" (means: ease-in-out), "lin" (means: linear), and undefined means "ease-out". This overrides the individual easing properties
+* **ease** (optional): easing function name. Choose from "ease-in", "ease" (means: ease-in-out), "lin" (means: linear), and undefined means "ease-out". The individual easing properties will override this.
 * **delay** how long to wait before starting the next animation
 * **callbackFunction** function to call after animation finished
 
@@ -45,20 +45,20 @@ This function returns an object with one method ("anim"), which allows you to st
 
 examples:
 =====
-    anim(box, {opacity: {to: 0.2, from: 1}},     2);  //long form specifying 'to' and 'from'
+    anim(box, {opacity: {to: 0.2, fr: 1}},     2);  //long form specifying 'to' and 'from'
     anim(box, {opacity: 0.2},                    2);
     anim(box, {height:  300},                    2,    "ease-in");
     anim(box, {height:  "14em",  width: "14em"}, 2);
-    anim(box, {marginLeft: "2%", fontSize: "20pt"}, 2, "ease-out");
+    anim(box, {marginLeft: "2%", fontSize: "20px"}, 2, "ease-out");
     anim(document.body, {scrollTop: 500},   5,    "lin");
 
 run 2 animations one after the other
 
-    anim(box, {height: 300}, 2).anim(box, {width: 300}, 2).anim(function() { alert("all done") });
+    anim(box, {height:300}, 2).anim(box, {width:300}, 2).anim(function() { alert("all done") });
  
 run 2 animations with a 1 second delay in between
 
-    anim(box, {height: 300}, 2).anim(1).anim(box, {width: 300}, 2);
+    anim(box, {height:300}, 2).anim(1).anim(box, {width:300}, 2);
 
 
 support:
