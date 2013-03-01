@@ -62,7 +62,7 @@ var T="Top", R="Right", B="Bottom", L="Left",
   },
 
   timeout = function(w, a) {
-    return w["webkitR"+a] || w["mozR"+a] || w["msR"+a] || w["r"+a] || w["oR"+a]
+    return w["webkitR"+a] || w["r"+a] || w["mozR"+a] || w["msR"+a] || w["oR"+a]
   }(window, "equestAnimationFrame");
 
 A.defs = function(o, n, a, e, s) {
@@ -77,7 +77,11 @@ A.defs = function(o, n, a, e, s) {
 
   o.u = (/\d(\D+)$/.exec(o.to) || /\d(\D+)$/.exec(o.fr) || [0, 0])[1];  //units
 
-  o.fn = /color/i.test(a) ? A.fx.color : (A.fx[a] || A.fx._)
+  o.fn = /color/i.test(a) ? A.fx.color : (A.fx[a] || A.fx._);
+
+  o.mx = "mutex_" + a;
+  n[o.mx] = o.mxv = Math.random();
+  if(n[o.mx] != o.mxv) o.mxv = null;  //test expando
 };
 
 A.iter = function(g, t, cb) {
@@ -101,6 +105,9 @@ A.iter = function(g, t, cb) {
 
       for(o in g) {
         o = g[o];
+
+        if(o.n[o.mx] != o.mxv) return;
+
         e = o.e;
         p = i;
 
