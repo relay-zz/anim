@@ -9,6 +9,7 @@ table, td, th, tr {margin:0; padding:0; border:0; border-collapse:collapse}
 td {width:50%; padding:6px 3px; vertical-align:middle; border:1px solid #eee}
 textarea {height:100px; width:98%; font-size:9pt}
 .sect div {padding:2px; background:#dd5; border:1px solid #aa0; margin:2px}
+td {width:50%}
 </style>
 </head>
 <body>
@@ -28,9 +29,8 @@ textarea {height:100px; width:98%; font-size:9pt}
       <textarea id=at readonly>
 anim("a1", {width:"90%"}, 3, "ease-in").anim(1).anim("a1", {width:0}, 1, "ease-in");
 anim("a2", {width:"90%"}, 3, "ease-out").anim(1).anim("a2", {width:0}, 1, "ease-out");
-anim("a3", {width:"90%"}, 3, "ease").anim(1).anim("a3", {width:0}, 1, "ease");
-anim("a4", {width:"90%"}, 3, "lin").anim(1).anim("a4", {width:0}, 1, "lin").anim(1)
-.anim(goA);
+anim("a3", {width:"90%"}, 3, "ease").anim(1).anim("a3", {width:0}, 1, "ease").anim(1);
+anim("a4", {width:"90%"}, 3, "lin").anim(1).anim("a4", {width:0}, 1, "lin").anim(1).anim(goA);
       </textarea>
     <script>function goA() { eval(byId("at").value) } goA();</script>
     </td>
@@ -70,9 +70,9 @@ anim("c1", {borderRadius:"30px", left:"50%"}, 1.5, "ease-out")
       <div id=d1 style="padding:1em; display:inline; font-family:courier; border:1px solid #faa; background-color:#fff">RED</div>
     </td><td>
       <textarea id=dt readonly>
-anim("d1", {backgroundColor:"#f66", border:10}, 1).anim(function() {byId("d1").innerHTML="GRN"})
-.anim("d1", {backgroundColor:"#6f6", border:0}, 1).anim(function() {byId("d1").innerHTML="BLU"})
-.anim("d1", {backgroundColor:"#66f", borderLeftWidth:10, borderTopWidth:3, borderRightWidth:10, borderBottomWidth:3}, 1).anim(function() {byId("d1").innerHTML="RED"})
+anim("d1", {backgroundColor:"#f66", border:10}, 1).anim(function(){ byId("d1").innerHTML="GRN"})
+.anim("d1", {backgroundColor:"#6f6", border:0}, 1).anim(function(){ byId("d1").innerHTML="BLU"})
+.anim("d1", {backgroundColor:"#66f", borderLeftWidth:10, borderTopWidth:3, borderRightWidth:10, borderBottomWidth:3}, 1).anim(function(){ byId("d1").innerHTML="RED"})
 .anim(goD);
       </textarea>
     <script>function goD() { eval(byId("dt").value) } goD();</script>
@@ -110,8 +110,27 @@ anim("f1", {height: newHeight}, 0.5)
       </textarea>
     </td>
   </tr>
+
+  <tr>
+    <td class="sect" style="height:180px">
+      <div id=g1 style="width:100px">hover</div>
+      <div id=g2 style="width:100px">hover</div>
+      <div id=g3 style="width:100px">hover</div>
+    </td><td>
+      <textarea id=gt readonly>
+byId("g1").onmouseover = function(){ anim("g1", {width:"300px"}, 1) }
+byId("g1").onmouseout = function(){ anim("g1", {width:"100px"}, 0.3) }
+byId("g2").onmouseover = function(){ anim("g2", {width:"300px"}, 1) }
+byId("g2").onmouseout = function(){ anim("g2", {width:"100px"}, 0.3) }
+byId("g3").onmouseover = function(){ anim("g3", {width:"300px"}, 1) }
+byId("g3").onmouseout = function(){ anim("g3", {width:"100px"}, 0.3) }
+      </textarea>
+    <script>function goG() { eval(byId("gt").value) } goG();</script>
+    </td>
+  </tr>
+
 </table>
-    <script>//move outside table
+    <script>//move outside table because of offsetHeight
     function goF() { eval(byId("ft").value) } goF();
     </script>
 
