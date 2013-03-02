@@ -27,8 +27,8 @@ A = function(n, g, t, e) {
   if(n.charAt) n = document.getElementById(n);
   if(n > 0 || !n) g = {}, t = 0, cb(q = [[n || 0]]);
 
-  split(g, {padding:0, margin:0, border:"Width"}, [T, R, B, L]);
-  split(g, {borderRadius:"Radius"}, [T+L, T+R, B+R, B+L]);
+  expand(g, {padding:0, margin:0, border:"Width"}, [T, R, B, L]);
+  expand(g, {borderRadius:"Radius"}, [T+L, T+R, B+R, B+L]);
 
   for(a in g) {
     o = g[a];
@@ -48,12 +48,13 @@ A = function(n, g, t, e) {
 
 var T="Top", R="Right", B="Bottom", L="Left",
 
-  split = function(g, dim, dir, a, i, d, o) {
+  //{border:1} => {borderTop:1, borderRight:1, borderBottom:1, borderLeft:1}
+  expand = function(g, dim, dir, a, i, d, o) {
     for(a in g) {
       if(a in dim) {
         o = g[a];
         for(i = 0; d = dir[i]; i++)
-          g[a.replace(dim[a], "") + d + (dim[a] || "")] =  {
+          g[a.replace(dim[a], "") + d + (dim[a] || "")] = {
             to:(o.to === 0) ? o.to : (o.to || o), fr:o.fr, e:o.e
           };
         delete g[a];
