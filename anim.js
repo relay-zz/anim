@@ -30,6 +30,8 @@ A = function(n, g, t, e) {
   expand(g, {padding:0, margin:0, border:"Width"}, [T, R, B, L]);
   expand(g, {borderRadius:"Radius"}, [T+L, T+R, B+R, B+L]);
 
+  ++mutex;
+
   for(a in g) {
     o = g[a];
     if(!o.to && o.to !== 0) o = g[a] = {to: o};  //shorthand
@@ -47,6 +49,7 @@ A = function(n, g, t, e) {
 };
 
 var T="Top", R="Right", B="Bottom", L="Left",
+  mutex = 1,
 
   //{border:1} => {borderTop:1, borderRight:1, borderBottom:1, borderLeft:1}
   expand = function(g, dim, dir, a, i, d, o) {
@@ -80,8 +83,8 @@ A.defs = function(o, n, a, e, s) {
 
   o.fn = /color/i.test(a) ? A.fx.color : (A.fx[a] || A.fx._);
 
-  o.mx = "mutex_" + a;
-  n[o.mx] = o.mxv = Math.random();
+  o.mx = "anim_" + a;
+  n[o.mx] = o.mxv = mutex;
   if(n[o.mx] != o.mxv) o.mxv = null;  //test expando
 };
 
