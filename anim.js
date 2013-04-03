@@ -157,7 +157,7 @@ A.iter = function(g, t, cb) {
         o.p = p;
         o.fn(o, o.n, o.to, o.fr, o.a, o.e)
       }
-      timeout ? timeout(_) : setTimeout(_, 50, 0)
+      timeout ? timeout(_) : setTimeout(_, 20, 0)
     }
   }
   _();
