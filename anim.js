@@ -89,7 +89,8 @@ var T="Top", R="Right", B="Bottom", L="Left",
   },
 
   timeout = function(w, a) {
-    return w["webkitR"+a] || w["r"+a] || w["mozR"+a] || w["msR"+a] || w["oR"+a]
+    // it's probably fine to just use non-prefixed options
+    return w["r"+a] || w["webkitR"+a] || w["mozR"+a] || w["msR"+a] || w["oR"+a]
   }(window, "equestAnimationFrame");
 
 A.defs = function(o, n, a, e, s) {
@@ -115,10 +116,26 @@ A.defs = function(o, n, a, e, s) {
 
 A.iter = function(g, t, cb) {
   var _, i, o, p, e,
-    z = +new Date + t,
+      z = (window.performance && window.performance.now ? window.performance.now() : +new Date) + t;
 
   _ = function(now) {
-    i = z - (now || new Date().getTime());
+    i = z;
+
+    // Have to handle the following:
+    // - Safari on iOS doesn't provide window.performance.now
+    // - if we use a prefixed version of RAF, `now` will be
+    //   in terms of Date().getTime()
+    // - BUT, if we use a non-prefixed version of RAF, `now`
+    //   is time since the first page render; this isn't compatible
+    //   with Date().getTime() math, but window.performance.now()
+    //   returns a similar value.
+    if (window.performance && window.performance.now)
+      if (now && now < 1e12)
+        i -= now;
+      else
+        i -= window.performance.now();
+    else
+      i -= new Date().getTime();
 
     if(i < 50) {
       for(o in g)
