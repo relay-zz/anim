@@ -19,7 +19,7 @@ A = function(n, g, t, e) {
   var a, o, c,
     q = [],
     cb = function(i) {
-      //our internal callback function maintains a queue of objects 
+      //our internal callback function maintains a queue of objects
       //that contain callback info. If the object is an array of length
       //over 2, then it is parameters for the next animation. If the object
       //is an array of length 1 and the item in the array is a number,
@@ -38,7 +38,7 @@ A = function(n, g, t, e) {
 
   //firefox don't allow reading shorthand CSS styles like "margin" so
   //we have to expand them to be "margin-left", "margin-top", etc.
-  //Also, expanding them allows the 4 values to animate independently 
+  //Also, expanding them allows the 4 values to animate independently
   //in the case that the 4 values are different to begin with.
   expand(g, {padding:0, margin:0, border:"Width"}, [T, R, B, L]);
   expand(g, {borderRadius:"Radius"}, [T+L, T+R, B+R, B+L]);
@@ -90,7 +90,7 @@ var T="Top", R="Right", B="Bottom", L="Left",
 
   timeout = function(w, a) {
     return w["webkitR"+a] || w["r"+a] || w["mozR"+a] || w["msR"+a] || w["oR"+a]
-  }(window, "equestAnimationFrame");
+}(window, "requestAnimationFrame");
 
 A.defs = function(o, n, a, e, s) {
   s = n.style;
@@ -142,15 +142,15 @@ A.iter = function(g, t, cb) {
 
         if(e == "lin") {
           p = 1 - p
-  
+
         } else if(e == "ease") {
           p = (0.5 - p)*2;
           p = 1 - ((p*p*p - p*3) + 2)/4
-  
+
         } else if(e == "ease-in") {
           p = 1 - p;
           p = p*p*p
-  
+
         } else {  //ease-out
           p = 1 - p*p*p
         }
