@@ -1,4 +1,4 @@
-/** Copyright 2013 mocking@gmail.com * http://github.com/relay/anim
+/** Copyright 2013 mocking@gmail.com * http://github.com/relay-zz/anim
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -89,7 +89,7 @@ var T="Top", R="Right", B="Bottom", L="Left",
   },
 
   timeout = function(w, a) {
-    return w["webkitR"+a] || w["r"+a] || w["mozR"+a] || w["msR"+a] || w["oR"+a]
+    return w["r"+a] || w["webkitR"+a] || w["mozR"+a] || w["msR"+a] || w["oR"+a]
   }(window, "equestAnimationFrame");
 
 A.defs = function(o, n, a, e, s) {
@@ -117,8 +117,8 @@ A.iter = function(g, t, cb) {
   var _, i, o, p, e,
     z = +new Date + t,
 
-  _ = function(now) {
-    i = z - (now || new Date().getTime());
+  _ = function() {
+    i = z - new Date().getTime();
 
     if(i < 50) {
       for(o in g)
@@ -157,7 +157,7 @@ A.iter = function(g, t, cb) {
         o.p = p;
         o.fn(o, o.n, o.to, o.fr, o.a, o.e)
       }
-      timeout ? timeout(_) : setTimeout(_, 20, 0)
+      timeout ? timeout(_) : setTimeout(_, 20)
     }
   }
   _();
