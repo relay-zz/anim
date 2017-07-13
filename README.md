@@ -1,7 +1,7 @@
 anim
 ====
 
-Anim is a tiny and bare bones animation library weighing in at [`7 KB`](https://raw.github.com/relay/anim/master/anim.js) in plain code, **[`2.8 KB`](https://raw.github.com/relay/anim/master/anim.min.js)** when minified and **`1.5 KB`** when gzipped.
+Anim is a tiny and bare bones animation library weighing in at [`7 KB`](https://raw.github.com/relay-zz/anim/master/anim.js) in plain code, **[`2.8 KB`](https://raw.github.com/relay/anim/master/anim.min.js)** when minified and **`1.5 KB`** when gzipped.
 
 Why Anim? Because sometimes if you only want a little animation, you may not want to pull in a full fledged library like jQuery which is `90 KB` minified and `32 KB` gzipped.
 
@@ -9,7 +9,7 @@ Anim can animate any property that accepts number and color values including but
 
 demo
 =====
-http://relay.github.com/anim_demo.html
+http://relay-zz.github.io/anim_demo.html
 
 features
 =====
